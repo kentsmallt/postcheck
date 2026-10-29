@@ -10,8 +10,8 @@ I use it as a final gate in a semi-automated posting workflow: drafts are piped 
 |---|---|
 | Links | Replies may not contain links. Originals/quotes may contain only allow-listed links, once, as a bare URL on the last line, and the body must mention a configured keyword. |
 | Banned markers | Configurable banned phrases, cashtags (`$XXX`), hashtags, and brand names that look like domains (e.g. `foo.io`, which X auto-links). |
-| Length | Min / target-max character counts for originals and quotes; char ranges (Chinese) or word ranges (English) for replies. |
-| AI tone | Lists and regexes of stock "AI-sounding" phrases in Chinese and English (e.g. "crucial", "delve", "not X, but Y"), meta/process commentary, and formulaic closing lines. |
+| Length | Min / target-max character counts for originals and quotes (over target warns). Questions have a hard minimum and a hard maximum; going over the maximum fails. Replies use a character range (Chinese) or a word range (English). |
+| AI tone | Lists and regexes of stock "AI-sounding" phrases in Chinese and English (e.g. "crucial", "delve", "not X, but Y", "here's what I'm watching", "接下來我會盯"), meta/process commentary, and formulaic closing lines. |
 | Style | No em dashes, no bold markdown headings; Mainland-Chinese wording flagged in Traditional Chinese posts. |
 | Density | Max numbers per sentence (dates, hex addresses and @handles ignored), max sentences per paragraph, max uses of approximation words. |
 | Duplicates | Compares against recent posts in a history folder using 3-word (English) / 4-char (Chinese) n-gram containment, and flags identical openings. |
@@ -36,7 +36,7 @@ python3 postcheck.py --type original --lang en --history ./history < draft.txt
 
 | Option | Meaning |
 |---|---|
-| `--type` | `original`, `quote`, `reply`, `own-reply` (required) |
+| `--type` | `original`, `quote`, `reply`, `own-reply`, `question` (required) |
 | `--lang` | `en`, `zh`, `zh-hans`; auto-detected from CJK ratio if omitted |
 | `--rules` | Rules JSON; defaults to `rules.json`, falling back to `rules.example.json` |
 | `--history` | Folder of recently published posts (`*.txt`, `*.md`) for duplicate checks |
