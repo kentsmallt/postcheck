@@ -1,16 +1,18 @@
 {
-  "_note": "Editable rule lists for postcheck.py. Add phrases to the matching array.",
+  "_note": "Editable rule lists for postcheck.py. Add phrases to the matching array. For --type question, min_chars is a hard minimum and target_max_chars_warn is a hard maximum (defaults to 50 when the key is omitted).",
   "allowed_links": [
     "https://example.com/your-link"
   ],
   "pinned_link_keyword": "example",
   "min_chars": {
     "original": 150,
-    "quote": 150
+    "quote": 150,
+    "question": 10
   },
   "target_max_chars_warn": {
     "original": 400,
-    "quote": 400
+    "quote": 400,
+    "question": 50
   },
   "reply_zh_chars": [
     40,
@@ -29,6 +31,8 @@
   ],
   "banned_always": [
     "#ad",
+    "含推薦連結",
+    "含推荐链接",
     "非投資建議",
     "非投资建议",
     "我們的",
@@ -124,7 +128,46 @@
     "就是用来",
     "根據報告",
     "核心洞見",
-    "核心洞见"
+    "核心洞见",
+    "接下來我會盯",
+    "接下来我会盯",
+    "接下來我會看",
+    "接下来我会看",
+    "接下來我要",
+    "接下来我要",
+    "我會持續關注",
+    "我会持续关注",
+    "我會持續盯",
+    "我会持续盯",
+    "我會繼續關注",
+    "我会继续关注",
+    "持續關注",
+    "持续关注",
+    "I'll keep watching",
+    "I'll be watching",
+    "I'll keep an eye",
+    "I'll continue to watch",
+    "接下來該盯",
+    "接下来该盯",
+    "接下來要盯",
+    "接下来要盯",
+    "該盯的",
+    "该盯的",
+    "要盯的四",
+    "要盯的几",
+    "要盯的幾",
+    "值得盯",
+    "值得观察的是",
+    "值得觀察的是",
+    "Here's what I'm watching",
+    "Key things to watch",
+    "what I'll be watching",
+    "what I'm watching next",
+    "全看那",
+    "全看这",
+    "全看這",
+    "能否拦住",
+    "能否攔住"
   ],
   "ai_tone_regex": [
     "真正[^。！？\\n]{0,15}的[，,]?是",
@@ -134,7 +177,25 @@
     "根據[^。！？\\n]{1,15}(的)?報告",
     "根据[^。！？\\n]{1,15}(的)?报告",
     "為什麼？",
-    "为什么？"
+    "为什么？",
+    "接下來我會(盯|看|關注|关注)",
+    "接下来我会(盯|看|關注|关注)",
+    "我會持續(關注|关注|盯|觀察|观察)",
+    "我会持续(關注|关注|盯|觀察|观察)",
+    "接下來我要[^。！？\\n]{0,40}",
+    "接下来我要[^。！？\\n]{0,40}",
+    "(?i)i('ll| will) (keep watching|be watching|keep an eye|continue to (watch|monitor))",
+    "接下來該盯",
+    "接下来该盯",
+    "接下來要盯",
+    "接下来要盯",
+    "(接下來|接下来).{0,8}(我會|我会|該|该|要)?盯",
+    "要盯的[四四五六七八九十\\d]+",
+    "(?i)(here'?s what I('?m| will be) watching|key things to watch|what I('?ll| will) (be )?watch)",
+    "能否[^。！？\\n]{0,40}全看",
+    "能不能[^。！？\\n]{0,40}全看",
+    "全看那[^。！？\\n]{0,30}(有没有|有沒有|是否)[^。！？\\n]{0,20}(按|按下|點|点)",
+    "全看[^。！？\\n]{0,25}(有没有人|有沒有人)[^。！？\\n]{0,15}(按|按下)"
   ],
   "process_phrases": [
     "數字來自",
@@ -160,7 +221,18 @@
     "就夠了[。！]?$",
     "就够了[。！]?$",
     "(再看|拭目以待|且行且珍惜|未來可期|未来可期|值得期待)[。！]?$",
-    "(I'll be watching|we'll see|time will tell|stay tuned)[.!]?$"
+    "(I'll be watching|we'll see|time will tell|stay tuned)[.!]?$",
+    "接下來我會[^。！？]*[。！]?$",
+    "接下来我会[^。！？]*[。！]?$",
+    "我會持續[^。！？]*[。！]?$",
+    "我会持续[^。！？]*[。！]?$",
+    "(?i)i('ll| will) (keep watching|be watching|keep an eye)[^.!]*[.!]?$",
+    "接下來該盯[^。！？]*[。！]?$",
+    "接下来该盯[^。！？]*[。！]?$",
+    "還有接下來我會盯[^。！？]*[。！]?$",
+    "还有接下来我会盯[^。！？]*[。！]?$",
+    "全看[^。！？\\n]{2,40}[。！]?$",
+    "能否[^。！？\\n]{2,40}全看[^。！？\\n]{2,40}[。！]?$"
   ],
   "en_ai_words": [
     "crucial",

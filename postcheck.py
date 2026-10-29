@@ -2,7 +2,7 @@
 """postcheck: deterministic pre-publish checks for social media posts (no LLM calls).
 
 Usage:
-    python3 postcheck.py --type {original,quote,reply,own-reply} [--lang zh|zh-hans|en]
+    python3 postcheck.py --type {original,quote,reply,own-reply,question} [--lang zh|zh-hans|en]
                          [--rules FILE] [--history DIR] [--exclude FILE] [--no-dup] < draft.txt
 
 Prints WARN lines (informational) and FAIL lines. Exit code 0 = PASS, 1 = FAIL.
@@ -137,13 +137,18 @@ def check(text, post_type, rules, lang=None, history=()):
         if dom:
             F(f'Brand names that look like domains get auto-linked: {dom}')
 
-    # Length
+    # Length. Originals/quotes warn above the target. Questions are a short
+    # format: over the cap fails (production hard-cap of 50, 2026-10-25).
     n = body_chars(t, allowed)
-    if post_type in R.get('min_chars', {}):
-        if n < R['min_chars'][post_type]:
-            F(f'Body is {n} chars, below minimum {R["min_chars"][post_type]}')
-        if n > R['target_max_chars_warn'][post_type]:
-            W(f'Body is {n} chars, above target {R["target_max_chars_warn"][post_type]}')
+    if post_type in R.get('min_chars', {}) and n < R['min_chars'][post_type]:
+        F(f'Body is {n} chars, below minimum {R["min_chars"][post_type]}')
+    maxes = R.get('target_max_chars_warn', {})
+    if post_type == 'question':
+        cap = maxes.get('question', 50)
+        if n > cap:
+            F(f'Question is {n} chars, above maximum {cap}')
+    elif post_type in maxes and n > maxes[post_type]:
+        W(f'Body is {n} chars, above target {maxes[post_type]}')
     if is_reply:
         if lang == 'en':
             wc = len(re.findall(r"[A-Za-z0-9'’]+", t))
@@ -233,7 +238,8 @@ def check(text, post_type, rules, lang=None, history=()):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description='Pre-publish quality checks for social posts.')
-    ap.add_argument('--type', required=True, choices=['original', 'quote', 'reply', 'own-reply'])
+    ap.add_argument('--type', required=True,
+                    choices=['original', 'quote', 'reply', 'own-reply', 'question'])
     ap.add_argument('--lang', choices=['zh', 'zh-hans', 'en'])
     ap.add_argument('--rules', help='rules JSON (default: rules.json, else rules.example.json)')
     ap.add_argument('--history', help='directory of recent published posts for duplicate checks')
